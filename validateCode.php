@@ -1,11 +1,3 @@
-<?php
-session_start();
-
-
-session_destroy();
-
-?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,22 +18,15 @@ session_destroy();
 <body>
     <!--  Request me for a signup form or any type of help  -->
     <div class="login-form">
-        <form action="controller/login_check.php" method="post">
+        <form action="controller/validate_code_check.php" method="post">
             <div class="avatar"><i class="material-icons">&#xE7FF;</i></div>
-            <h4 class="modal-title">Login to Your Account</h4>
+            <h4 class="modal-title">verified code</h4>
             <div class="form-group">
-                <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+                <input type="text" class="form-control" name="vcode" placeholder="code" required="required">
             </div>
-            <div class="form-group">
-                <input type="password" class="form-control" name="password" placeholder="Password" required="required">
-            </div>
-            <div class="form-group small clearfix">
-                <label class="checkbox-inline"><input type="checkbox"> Remember me</label>
-                <a href="mail.php" class="forgot-link">Forgot Password?</a>
-            </div>
-            <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
+            <input type="submit" class="btn btn-primary btn-block btn-lg" value="verified">
         </form>
-        <div class="text-center small">Don't have an account? <a href="register.php">Sign up</a></div>
+      
     </div>
 </body>
 

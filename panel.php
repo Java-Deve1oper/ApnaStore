@@ -14,9 +14,11 @@ if ($_SESSION["login_user"] != null) {
             <title>
                 Welcome <?php echo $_SESSION["login_user"]; ?>
             </title>
+
             <link rel="stylesheet" href="css/header.css">
             <link rel="stylesheet" href="css/panel.css">
-
+            <link rel="stylesheet" href="css/tooltips.css">
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         </head>
 
         <body>
@@ -47,6 +49,7 @@ if ($_SESSION["login_user"] != null) {
                     $result = mysqli_query($conn, $query);
 
                     $count = mysqli_num_rows($result);
+                    $i = 1;
                     if ($count > 0) {
                         foreach ($result as $row) {
 
@@ -62,14 +65,15 @@ if ($_SESSION["login_user"] != null) {
 
                             echo '
                          <tr >
-                            <td  onclick="myFunction(' . $Qid . ',' . "'uploads/$Qimage'" . ',' . "'$Qname'" . ',' . "'$Qmodel'" . ',' . "'$Qrate'" . ',' . "'$Qstatus'" . ')">' . $row["pid"] . '</td>
+                            <td  class="tooltip" onclick="myFunction(' . $Qid . ',' . "'uploads/$Qimage'" . ',' . "'$Qname'" . ',' . "'$Qmodel'" . ',' . "'$Qrate'" . ',' . "'$Qstatus'" . ')">' . '<span class="tooltiptext">Click Me</span> ' . $i . '</td>
                             <td>' . '<img src="uploads/' . $row['pimage'] . '" height="100" width="100" onClick="image(this)" />' . '</td>
                             <td>' . $row["pname"] . ' </td>
                             <td>' . $row["pmodel"] . '</td>
                             <td>' . $row["prate"] . ".00 ₹" . '</td>
                             <td>' . $row["pstatus"] . '</td>
-                            <td>' . '<a style="text-decoration:none" href="controller/deleteData.php?uname=' . $_SESSION["login_user"] . '&deleteData=delete&id=' . $row["pid"] . '" onclick="return confirm(\'Are you sure to delete?\')" >Delete</a>  ||  <a style="text-decoration:none" href="#" onclick="myFunction(' . $Qid . ',' . "'uploads/$Qimage'" . ',' . "'$Qname'" . ',' . "'$Qmodel'" . ',' . "'$Qrate'" . ',' . "'$Qstatus'" . ')">edit</a>' . '</td>
+                            <td>' . '<a style="text-decoration:none" href="controller/deleteData.php?uname=' . $_SESSION["login_user"] . '&deleteData=delete&id=' . $row["pid"] . '" onclick="return confirm(\'Are you sure to delete?\')" >Delete</a>  ||  <a style="text-decoration:none" href="#" onclick="myFunction(' . $Qid . ',' . "'uploads/$Qimage'" . ',' . "'$Qname'" . ',' . "'$Qmodel'" . ',' . "'$Qrate'" . ',' . "'$Qstatus'" . ')">Edit</a>' . '</td>
                           </tr>';
+                            $i++;
                         }
                     }
                     //|| ' . '<a href="editData(' . $row["pid"] . ')">Edit</a>' 
@@ -143,10 +147,12 @@ if ($_SESSION["login_user"] != null) {
 
                 <form class="modal-content animate" action="controller/editData.php" method="post">
                     <div class="imgcontainer">
+                        <div id="targetLayer"></div>
                         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                         <img id="myImg" src="" alt="Avatar" class="avatar">
                     </div>
-                    <div class="container">
+                    <input type="file" name="userimg" id="userImage"  class="inputFile" onChange="showPreview(this);" />
+                       <div class="container">
 
                         <label for="Product-ID"><b>Product ID</b></label>
                         <input type="text" placeholder="Dont Change this" id="myId" name="product_id" readonly>
@@ -177,7 +183,29 @@ if ($_SESSION["login_user"] != null) {
 
 
 
-            <script>
+
+            <script type="text/javascript">
+                function showPreview(objFileInput) {
+                    if (objFileInput.files[0]) {
+                        var fileReader = new FileReader();
+                        fileReader.onload = function(e) {
+                            $('#myImg').attr('src', e.target.result);
+                            $("#myImg").html( e.target.result );
+                        }
+                        fileReader.readAsDataURL(objFileInput.files[0]);
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
                 var modal = document.getElementById('id01');
 
                 // When the user clicks anywhere outside of the modal, close it
